@@ -1,0 +1,21 @@
+services:
+  neo4j:
+    image: neo4j:latest
+    container_name: workgraph-neo4j
+    environment:
+      NEO4J_AUTH: neo4j/password
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+
+  backend:
+    build: ./backend
+    container_name: workgraph-backend
+    ports:
+      - "8000:8000"
+    environment:
+      NEO4J_URI: bolt://neo4j:7687
+      NEO4J_USER: neo4j
+      NEO4J_PASSWORD: password
+    depends_on:
+      - neo4j
